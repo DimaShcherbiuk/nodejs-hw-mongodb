@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino';
 
-import { env } from './utils/env.js';
 import contactsRouter from './routers/contacts.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { env } from './utils/evn.js';
+import pino from 'pino-http';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -28,6 +29,9 @@ export const setupServer = () => {
       message: 'Not found',
     });
   });
+
+  app.use(errorHandler);
+
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
