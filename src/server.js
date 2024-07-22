@@ -5,6 +5,7 @@ import contactsRouter from './routers/contacts.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { env } from './utils/evn.js';
 import pino from 'pino-http';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -24,11 +25,7 @@ export const setupServer = () => {
 
   app.use('/contacts', contactsRouter);
 
-  app.use('*', (req, res, next) => {
-    res.status(404).json({
-      message: 'Not found',
-    });
-  });
+  app.use('*', notFoundHandler);
 
   app.use(errorHandler);
 
