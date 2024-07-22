@@ -21,10 +21,6 @@ export async function getContactById(req, res) {
   const contact = await getContactByIdFormDB(contactId);
   if (!contact) {
     createHttpError(404, 'Contact not found');
-
-    // res.status(404).json({
-    //   message: 'Contact not found',
-    // });
   } else {
     res.json({
       status: 200,
