@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
+import pino from 'pino-http';
 
 import contactsRouter from './routers/contacts.js';
+
 import { errorHandler } from './middlewares/errorHandler.js';
-import { env } from './utils/evn.js';
-import pino from 'pino-http';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { env } from './utils/evn.js';
 
 const PORT = Number(env('PORT', '3000'));
 
