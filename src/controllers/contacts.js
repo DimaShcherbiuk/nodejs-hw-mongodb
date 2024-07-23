@@ -34,7 +34,7 @@ export async function addContact(req, res) {
   const contact = await createContact(req.body);
   res.status(201).json({
     status: 201,
-    message: 'Successfully created a product!',
+    message: 'Successfully created a contact!',
     data: contact,
   });
 }
@@ -47,7 +47,7 @@ export async function updateContactById(req, res, next) {
   }
   res.status(200).json({
     status: 200,
-    message: `Successfully patched a student!`,
+    message: `Successfully patched a contact!`,
     data: contact,
   });
 }
@@ -56,8 +56,7 @@ export async function deleteContactById(req, res, next) {
   const { contactId } = req.params;
   const contact = await deleteContact(contactId);
   if (!contact) {
-    next(createHttpError(404, 'Student not found'));
-    return;
+    throw createHttpError(404, 'Contact not found');
   }
   res.status(204).send();
 }
