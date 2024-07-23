@@ -5,7 +5,7 @@ import {
   getContactById,
   addContact,
   deleteContactById,
-  changeContact,
+  updateContactById,
 } from '../controllers/contacts.js';
 
 const contactsRouter = Router();
@@ -18,6 +18,6 @@ contactsRouter.post('/', ctrlWrapper(addContact));
 
 contactsRouter.delete('/:contactId', ctrlWrapper(deleteContactById));
 
-contactsRouter.patch('/:contactId', ctrlWrapper(changeContact));
+contactsRouter.patch('/:contactId', ctrlWrapper(updateContactById));
 
 export default contactsRouter;

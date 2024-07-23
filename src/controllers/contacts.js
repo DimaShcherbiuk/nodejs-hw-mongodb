@@ -16,11 +16,11 @@ export async function getAllContacts(req, res) {
   });
 }
 
-export async function getContactById(req, res) {
+export async function getContactById(req, res, next) {
   const { contactId } = req.params;
   const contact = await getContactByIdFormDB(contactId);
   if (!contact) {
-    createHttpError(404, 'Contact not found');
+    throw createHttpError(404, 'Contact not found');
   } else {
     res.json({
       status: 200,
@@ -39,18 +39,17 @@ export async function addContact(req, res) {
   });
 }
 
-export async function changeContact(req, res) {
+export async function updateContactById(req, res, next) {
   const { contactId } = req.params;
-  const contact = await updateContact(contactId, req.body, { upsert: true });
+  const contact = await updateContact(contactId, req.body);
   if (!contact) {
-    createHttpError(404, 'Contact not found');
-  } else {
-    res.json({
-      status: 200,
-      message: `Successfully patched a student!`,
-      data: contact,
-    });
+    throw createHttpError(404, 'Contact not found');
   }
+  res.status(200).json({
+    status: 200,
+    message: `Successfully patched a student!`,
+    data: contact.contact,
+  });
 }
 
 export async function deleteContactById(req, res, next) {
@@ -59,7 +58,6 @@ export async function deleteContactById(req, res, next) {
   if (!contact) {
     next(createHttpError(404, 'Student not found'));
     return;
-  } else {
-    res.sendStatus(204);
   }
+  res.status(204).send();
 }
