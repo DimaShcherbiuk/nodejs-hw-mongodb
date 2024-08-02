@@ -20,6 +20,7 @@ export async function getAllContacts(req, res) {
     sortBy,
     sortOrder,
     filter,
+    userId,
   );
   res.json({
     status: 200,
@@ -31,19 +32,22 @@ export async function getAllContacts(req, res) {
 export async function getContactById(req, res, next) {
   const { contactId } = req.params;
   const contact = await getContactByIdFormDB(contactId);
-  if (!contact) {
-    throw createHttpError(404, 'Contact not found');
-  } else {
-    res.json({
-      status: 200,
-      message: `Successfully found contact with id ${contactId}`,
-      data: contact,
-    });
+  if (
+    contact === null ||
+    contact.userId.toString() !== req.user._id.toString()
+  ) {
+    return next(createHttpError(404, 'Student not found'));
   }
+
+  res.json({
+    status: 200,
+    message: `Successfully found contact with id ${contactId}`,
+    data: contact,
+  });
 }
 
 export async function addContact(req, res) {
-  const contact = await createContact(req.body);
+  const contact = await createContact({ ...req.body, userId: req.user._id });
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
