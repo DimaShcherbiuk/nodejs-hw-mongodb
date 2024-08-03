@@ -22,7 +22,6 @@ export async function getAllContacts(req, res) {
     filter,
     parentId: req.user._id,
   });
-  console.log(contacts);
   res.json({
     status: 200,
     message: 'Successfully found contacts!',
