@@ -22,6 +22,7 @@ export async function getAllContacts(req, res) {
     filter,
     parentId: req.user._id,
   });
+  console.log(contacts);
   res.json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -55,9 +56,7 @@ export async function addContact(req, res) {
     contactType: req.body.contactType,
     parentId: req.user._id,
   };
-
-  const createdContact = await createContact({ contact });
-
+  const createdContact = await createContact(contact);
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
