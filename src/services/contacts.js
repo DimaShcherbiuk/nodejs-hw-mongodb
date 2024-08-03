@@ -1,12 +1,13 @@
+import { SORT_ORDER } from '../constants/index.js';
 import { Contact } from '../db/models/Contact.js';
 import { createPaginationInfo } from '../utils/createPaginationInfo.js';
 
 export const getAllContactsFromDB = async (
   page,
   perPage,
-  sortOrder,
-  sortBy,
-  filter,
+  sortOrder = SORT_ORDER.ASC,
+  sortBy = '_id',
+  filter = {},
   parentId,
 ) => {
   const skip = perPage * (page - 1);
@@ -20,14 +21,13 @@ export const getAllContactsFromDB = async (
   }
 
   contactsQuery.where('parentId').equals(parentId);
-
   const [count, data] = await Promise.all([
     Contact.find().merge(contactsQuery).countDocuments(),
     Contact.find()
       .merge(contactsQuery)
       .skip(skip)
       .limit(perPage)
-      .sort({ [sortOrder]: sortBy })
+      .sort({ [sortBy]: sortOrder })
       .exec(),
   ]);
   const paginationInfo = createPaginationInfo(page, perPage, count);
