@@ -12,18 +12,20 @@ import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export async function getAllContacts(req, res) {
   const { page, perPage } = parsePaginationParams(req.query);
+
   const { sortBy, sortOrder } = parseSortParams(req.query);
 
   const filter = parseFilterParams(req.query);
+
   const contacts = await getAllContactsFromDB({
     page,
     perPage,
-    sortBy,
     sortOrder,
+    sortBy,
     filter,
     userId: req.user._id,
   });
-  console.log(contacts);
+
   res.json({
     status: 200,
     message: 'Successfully found contacts!',
@@ -34,7 +36,6 @@ export async function getAllContacts(req, res) {
 export async function getContactById(req, res, next) {
   const { contactId } = req.params;
   const userId = req.user._id;
-  // console.log(userId, contactId);
   const contact = await getContactByIdFormDB(contactId, userId);
   if (
     contact === null ||
@@ -60,6 +61,7 @@ export async function addContact(req, res) {
     userId: req.user._id,
   };
   const createdContact = await createContact(contact);
+
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
@@ -83,6 +85,7 @@ export async function updateContactById(req, res, next) {
   if (!result) {
     throw createHttpError(404, 'Contact not found');
   }
+
   res.status(200).json({
     status: 200,
     message: `Successfully patched a contact!`,
