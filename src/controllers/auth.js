@@ -9,7 +9,11 @@ async function register(req, res) {
 
   const registeredUser = await AuthService.registerUser(user);
 
-  res.send({ status: 200, message: 'User registered', data: registeredUser });
+  res.send({
+    status: 201,
+    message: 'Successfully registered a user!',
+    data: registeredUser,
+  });
 }
 
 async function login(req, res) {
@@ -29,7 +33,7 @@ async function login(req, res) {
 
   res.send({
     status: 200,
-    message: 'Login completed',
+    message: 'Successfully logged in an user!',
     data: {
       accessToken: session.accessToken,
     },
@@ -65,7 +69,7 @@ async function refresh(req, res) {
 
   res.send({
     status: 200,
-    message: 'Refresh completed',
+    message: 'Successfully refreshed a session!',
     data: {
       accessToken: session.accessToken,
     },
