@@ -10,6 +10,10 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { env } from '../utils/evn.js';
+
 export async function getAllContacts(req, res) {
   const { page, perPage } = parsePaginationParams(req.query);
 
@@ -52,6 +56,18 @@ export async function getContactById(req, res, next) {
 }
 
 export async function addContact(req, res) {
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
   const contact = {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
@@ -59,6 +75,7 @@ export async function addContact(req, res) {
     isFavourite: req.body.isFavourite,
     contactType: req.body.contactType,
     userId: req.user._id,
+    photo: photoUrl,
   };
   const createdContact = await createContact(contact);
 
@@ -73,12 +90,25 @@ export async function updateContactById(req, res, next) {
   const { contactId } = req.params;
   const userId = req.user._id;
 
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
   const contact = {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
     email: req.body.email,
     isFavourite: req.body.isFavourite,
     contactType: req.body.contactType,
+    photo: photoUrl,
   };
 
   const result = await updateContact(contactId, userId, contact);

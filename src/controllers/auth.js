@@ -76,4 +76,30 @@ async function refresh(req, res) {
   });
 }
 
-export { register, login, logout, refresh };
+async function requestResetEmailController(req, res) {
+  await AuthService.requestResetToken(req.body.email);
+
+  res.send({
+    status: 200,
+    message: 'Reset password email has been successfully sent.',
+    data: {},
+  });
+}
+
+async function resetPasswordController(req, res) {
+  await AuthService.resetPassword(req.body);
+  res.send({
+    status: 200,
+    message: 'Password has been successfully reset.',
+    data: {},
+  });
+}
+
+export {
+  register,
+  login,
+  logout,
+  refresh,
+  requestResetEmailController,
+  resetPasswordController,
+};
