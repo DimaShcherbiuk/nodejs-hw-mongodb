@@ -16,8 +16,7 @@ import {
   TEMPLATES_DIR,
 } from '../constants/index.js';
 
-import { env } from 'node:process';
-import { sendEmail } from '../utils/sendMail.js';
+import { sendMail } from '../utils/sendMail.js';
 
 async function registerUser(user) {
   const maybeUser = await User.findOne({ email: user.email });
@@ -92,12 +91,10 @@ async function requestResetToken(email) {
   const resetToken = jwt.sign(
     {
       sub: user._id,
-      email,
+      email: user.email,
     },
-    env('JWT_SECRET'),
-    {
-      expiresIn: '5m',
-    },
+    process.env.JWT_SECRET,
+    { expiresIn: '5m' },
   );
 
   const resetPasswordTemplatePath = path.join(
@@ -112,11 +109,11 @@ async function requestResetToken(email) {
   const template = handlebars.compile(templateSource);
   const html = template({
     name: user.name,
-    link: `${env('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+    link: `${process.env.APP_DOMAIN}/reset-password?token=${resetToken}`,
   });
 
-  await sendEmail({
-    from: env(SMTP.SMTP_FROM),
+  await sendMail({
+    from: SMTP.SMTP_FROM,
     to: email,
     subject: 'Reset your password',
     html,
@@ -127,7 +124,7 @@ async function resetPassword(payload) {
   let entries;
 
   try {
-    entries = jwt.verify(payload.token, env('JWT_SECRET'));
+    entries = jwt.verify(payload.token, process.env.JWT_SECRET);
   } catch (err) {
     if (err instanceof Error)
       throw createHttpError(401, 'Token is expired or invalid.');

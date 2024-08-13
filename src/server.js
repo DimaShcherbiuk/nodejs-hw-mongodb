@@ -8,10 +8,11 @@ import authRouter from './routers/auth.js';
 
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-import { env } from './utils/evn.js';
 import { UPLOAD_DIR } from './constants/index.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const PORT = Number(env('PORT', '3000'));
+const PORT = Number(process.env.PORT) || 3000;
 
 export const setupServer = () => {
   const app = express();
