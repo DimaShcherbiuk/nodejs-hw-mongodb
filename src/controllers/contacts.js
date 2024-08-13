@@ -118,7 +118,7 @@ export async function updateContactById(req, res, next) {
   res.status(200).json({
     status: 200,
     message: `Successfully patched a contact!`,
-    data: contact,
+    data: result,
   });
 }
 
