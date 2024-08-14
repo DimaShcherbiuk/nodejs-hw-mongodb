@@ -109,7 +109,7 @@ async function requestResetToken(email) {
   const template = handlebars.compile(templateSource);
   const html = template({
     name: user.name,
-    link: `${process.env.APP_DOMAIN}/reset-pwd?token=${resetToken}`,
+    link: `${process.env.APP_DOMAIN}/reset-password?token=${resetToken}`,
   });
 
   await sendMail({

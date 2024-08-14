@@ -12,7 +12,7 @@ import { UPLOAD_DIR } from './constants/index.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 8000;
 
 export const setupServer = () => {
   const app = express();
