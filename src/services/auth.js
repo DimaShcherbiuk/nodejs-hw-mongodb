@@ -12,7 +12,6 @@ import { Session } from '../db/models/Session.js';
 import {
   ACCESS_TOKEN_TTL,
   REFRESH_TOKEN_TTL,
-  SMTP,
   TEMPLATES_DIR,
 } from '../constants/index.js';
 
@@ -113,7 +112,7 @@ async function requestResetToken(email) {
   });
 
   await sendMail({
-    from: SMTP.SMTP_FROM,
+    from: process.env.SMTP_FROM,
     to: email,
     subject: 'Reset your password',
     html,
