@@ -79,7 +79,7 @@ async function refresh(req, res) {
 async function requestResetEmailController(req, res) {
   await AuthService.requestResetToken(req.body.email);
 
-  res.send({
+  res.json({
     status: 200,
     message: 'Reset password email has been successfully sent.',
     data: {},
@@ -88,7 +88,7 @@ async function requestResetEmailController(req, res) {
 
 async function resetPasswordController(req, res) {
   await AuthService.resetPassword(req.body);
-  res.send({
+  res.json({
     status: 200,
     message: 'Password has been successfully reset.',
     data: {},
