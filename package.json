@@ -8,13 +8,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.js",
+    "build": "npm run build-docs",
+    "build-docs": "redocly bundle --ext json -o docs/swagger.json",
+    "preview-docs": "redocly preview-docs"
   },
   "keywords": [],
   "author": "Dmytro Shcherbiuk <dimon.sherbyuk@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@eslint/js": "^9.7.0",
+    "@redocly/cli": "^1.19.0",
     "eslint": "^9.7.0",
     "globals": "^15.8.0",
     "nodemon": "^3.1.4"
@@ -34,6 +38,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.14",
     "pino-http": "^10.2.0",
-    "pino-pretty": "^11.2.1"
+    "pino-pretty": "^11.2.1",
+    "swagger-ui-express": "^5.0.1"
   }
 }
