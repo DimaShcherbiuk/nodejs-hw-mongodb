@@ -9,6 +9,7 @@ import authRouter from './routers/auth.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { UPLOAD_DIR } from './constants/index.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -19,6 +20,7 @@ export const setupServer = () => {
 
   app.use(express.json());
   app.use(cors());
+  app.use('/api-docs', swaggerDocs());
   app.use(cookieParser());
 
   app.use(
@@ -36,11 +38,6 @@ export const setupServer = () => {
   app.use('*', notFoundHandler);
 
   app.use(errorHandler);
-
-  const swaggerUi = require('swagger-ui-express');
-  const swaggerDocument = require('./docs/swagger.json');
-
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
