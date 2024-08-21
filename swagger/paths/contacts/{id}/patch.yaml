@@ -9,6 +9,7 @@ parameters:
   - in: path
     name: id
     required: true
+    description: The ID of the contact to update
     schema:
       type: string
       example: 66af8bae7cef2fdee43ce1ed
