@@ -153,6 +153,7 @@
             "in": "path",
             "name": "id",
             "required": true,
+            "description": "The ID of the contact to update",
             "schema": {
               "type": "string",
               "example": "66af8bae7cef2fdee43ce1ed"
@@ -161,7 +162,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -260,7 +261,7 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "required": [
@@ -555,6 +556,7 @@
           "photo": {
             "description": "Link to contact's photo",
             "type": "string",
+            "format": "uri",
             "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
           }
         }
